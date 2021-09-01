@@ -9,9 +9,11 @@ import {
   Select,
 } from '@material-ui/core';
 
+import { PlaceDetails } from '../PlaceDetails/index.jsx';
+
 import useStyles from './styles.js';
 
-export const List = () => {
+export const List = ({ places }) => {
   const classes = useStyles();
   const [type, setType] = useState('restaurants');
   const [rating, setRating] = useState('');
@@ -43,13 +45,13 @@ export const List = () => {
       </FormControl>
 
       <Grid container spacing={3} className={classes.list}>
-        {/* {places?.map((place, index)=> {
+        {places?.map((place, index) => {
           return (
             <Grid item key={index} xs={12}>
-              <PlaceDetails />
+              <PlaceDetails place={place} />
             </Grid>
-          )
-        })} */}
+          );
+        })}
       </Grid>
     </div>
   );
