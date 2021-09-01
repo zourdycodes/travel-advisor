@@ -16,7 +16,7 @@ export const Map = ({
   weatherData,
 }) => {
   const classes = useStyles();
-  const isMobile = useMediaQuery('(min-width:600px)');
+  const isDesktop = useMediaQuery('(min-width:600px)');
 
   return (
     <div className={classes.mapContainer}>
@@ -32,7 +32,42 @@ export const Map = ({
           setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
         }}
         // onChildClick={''}
-      ></GoogleMapReact>
+      >
+        {places?.map((place, index) => {
+          return (
+            <div
+              className={classes.markerContainer}
+              lat={Number(place.latitude)}
+              lng={Number(place.longitude)}
+              key={index}
+            >
+              {!isDesktop ? (
+                <LocationOnOutlinedIcon color="primary" fontSize="large" />
+              ) : (
+                <Paper elevation={3} className={classes.paper}>
+                  <Typography
+                    className={classes.typography}
+                    variant="subtitle2"
+                    gutterBottom
+                  >
+                    {place.name}
+                  </Typography>
+                  <img
+                    src={
+                      place.photo
+                        ? place.photo.images.large.url
+                        : 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
+                    }
+                    className={classes.pointer}
+                    alt={place.name}
+                  />
+                  <Rating size="small" value={Number(place.rating)} readOnly />
+                </Paper>
+              )}
+            </div>
+          );
+        })}
+      </GoogleMapReact>
     </div>
   );
 };
