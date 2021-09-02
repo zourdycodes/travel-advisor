@@ -32,23 +32,26 @@ export const App = () => {
   }, [rating]);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    getPlaceData(type, bounds.sw, bounds.ne)
-      .then((data) => {
-        setPlaces(data);
-        setFiltered([]);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, [coordinates, bounds, type]);
+    if (bounds.sw && bounds.ne) {
+      setIsLoading(true);
+      getPlaceData(type, bounds.sw, bounds.ne)
+        .then((data) => {
+          setPlaces(
+            data.filter((place) => place.name && place.num_reviews > 0)
+          );
+          setFiltered([]);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  }, [bounds, type]);
 
   return (
     <>
       <CssBaseline />
-      <Header />
+      <Header setCoordinates={setCoordinates} />
       <Grid container spacing={3} style={{ width: '100%' }}>
         <Grid item xs={12} md={4}>
           <List

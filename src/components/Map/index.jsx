@@ -7,6 +7,8 @@ import Rating from '@material-ui/lab/Rating';
 // import { mapStyles } from './mapStyles';
 import useStyles from './styles.js';
 
+// my api: 'AIzaSyB1rFjNIe3KwfG73QEqbV60m2tvnDXIyJ4'
+
 export const Map = ({
   coordinates,
   places,
@@ -21,7 +23,7 @@ export const Map = ({
   return (
     <div className={classes.mapContainer}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: 'AIzaSyB1rFjNIe3KwfG73QEqbV60m2tvnDXIyJ4' }}
+        bootstrapURLKeys={{ key: 'AIzaSyDKAIWbkM0JwPKv5CVcIvM_iYsj5c7XtMs' }}
         defaultCenter={coordinates}
         center={coordinates}
         defaultZoom={14}
