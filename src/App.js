@@ -7,8 +7,15 @@ import { useEffect, useState } from 'react';
 
 export const App = () => {
   const [places, setPlaces] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+
   const [coordinates, setCoordinates] = useState({});
   const [bounds, setBounds] = useState({ ne: '', sw: '' });
+  const [childClicked, setChildClicked] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [type, setType] = useState('restaurants');
+  const [rating, setRating] = useState('');
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -19,15 +26,24 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
-    getPlaceData(bounds.sw, bounds.ne)
+    const filteredPlaces = places.filter((place) => place.rating > rating);
+
+    setFiltered(filteredPlaces);
+  }, [rating]);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    getPlaceData(type, bounds.sw, bounds.ne)
       .then((data) => {
-        console.log(data);
         setPlaces(data);
+        setFiltered([]);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err.message);
       });
-  }, [coordinates, bounds]);
+  }, [coordinates, bounds, type]);
 
   return (
     <>
@@ -35,14 +51,23 @@ export const App = () => {
       <Header />
       <Grid container spacing={3} style={{ width: '100%' }}>
         <Grid item xs={12} md={4}>
-          <List places={places} />
+          <List
+            places={filtered.length ? filtered : places}
+            childClicked={childClicked}
+            isLoading={isLoading}
+            type={type}
+            rating={rating}
+            setType={setType}
+            setRating={setRating}
+          />
         </Grid>
         <Grid item xs={12} md={8}>
           <Map
             setCoordinates={setCoordinates}
             setBounds={setBounds}
             coordinates={coordinates}
-            places={places}
+            places={filtered.length ? filtered : places}
+            setChildClicked={setChildClicked}
           />
         </Grid>
       </Grid>

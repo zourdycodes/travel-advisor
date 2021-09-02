@@ -17,7 +17,6 @@ export const Map = ({
 }) => {
   const classes = useStyles();
   const isDesktop = useMediaQuery('(min-width:600px)');
-  const [childClicked, setChildClicker] = React.useState(null);
 
   return (
     <div className={classes.mapContainer}>
@@ -32,7 +31,7 @@ export const Map = ({
           setCoordinates({ lat: e.center.lat, lng: e.center.lng });
           setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
         }}
-        onChildClick={(child) => {}}
+        onChildClick={(child) => setChildClicked(child)}
       >
         {places?.map((place, index) => {
           return (
